@@ -16,6 +16,6 @@ yum -y install mod_ssl openssl
 yum -y install wget
 
 #make file phpinfo.php
-echo /var/www/html/phpinfo.php > <?php
-echo /var/www/html/phpinfo.php >> phpinfo();
-echo /var/www/html/phpinfo.php >> ?>
+echo "<?php" > /var/www/html/phpinfo.php
+echo "phpinfo();" >> /var/www/html/phpinfo.php
+echo "?>" >> /var/www/html/phpinfo.php

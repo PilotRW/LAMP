@@ -14,3 +14,8 @@ yum -y install tomcat tomcat-webapps tomcat-admin
 yum -y install mod_ssl openssl
 #install wget
 yum -y install wget
+
+#make file phpinfo.php
+echo /var/www/html/phpinfo.php > <?php
+echo /var/www/html/phpinfo.php >> phpinfo();
+echo /var/www/html/phpinfo.php >> ?>

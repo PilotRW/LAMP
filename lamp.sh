@@ -10,7 +10,7 @@ yum -y upgrade
 #install packages section
 
 #install Apache
-yum -y install htttpd
+yum -y install httpd
 #Install mariadb
 yum -y install mariadb mariadb-server
 #Install php

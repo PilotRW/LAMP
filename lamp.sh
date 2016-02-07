@@ -23,3 +23,21 @@ yum -y install wget
 echo "<?php" > /var/www/html/phpinfo.php
 echo "phpinfo();" >> /var/www/html/phpinfo.php
 echo "?>" >> /var/www/html/phpinfo.php
+
+#start apache&maria
+systemctl start httpd
+systemctl enable httpd
+systemctl start mariadb
+systemctl enable mariadb
+
+#configure&start tomcat
+
+#copying correct  tomcat config file 
+cp -y tomcat-users.xml /home/root/tomcat-users.xml
+
+#start tomcat
+systemctl start tomcat
+systemctl enable tomcat
+
+# Download Jenkins and put them into tomcat 
+wget 

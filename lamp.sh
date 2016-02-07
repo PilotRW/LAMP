@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#root section
-su -
-
 #Upgrade section
 yum -y update
 yum -y upgrade

@@ -33,11 +33,13 @@ systemctl enable mariadb
 #configure&start tomcat
 
 #copying correct  tomcat config file 
-cp -y tomcat-users.xml /home/root/tomcat-users.xml
+cp -y tomcat-users.xml /etc/tomcat/tomcat-users.xml
 
 #start tomcat
 systemctl start tomcat
 systemctl enable tomcat
 
 # Download Jenkins and put them into tomcat 
-wget 
+wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
+# Copy .war to Jenkins
+cp jenkins.war /var/lib/tomcat/webapps 

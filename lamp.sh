@@ -46,5 +46,7 @@ cp jenkins.war /var/lib/tomcat/webapps
 
 #reverse proxy /jenkins
 cp reverse-proxy.conf /etc/httpd/conf.d
-systemctl httpd stop
-systemctl httpd start
+
+#SSL
+openssl genrsa -out ca.key 2048
+openssl req 

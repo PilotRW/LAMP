@@ -43,3 +43,8 @@ systemctl enable tomcat
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
 cp jenkins.war /var/lib/tomcat/webapps 
+
+#reverse proxy /jenkins
+cp reverse-proxy.conf /etc/httpd/conf.d
+systemctl httpd stop
+systemctl httpd start

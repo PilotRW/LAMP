@@ -66,7 +66,8 @@ cp ca.key /etc/pki/tls/private/
 cp ca.csr /etc/pki/tls/private/
 cp ssl.conf /etc/httpd/conf.d/
 
-#restart apache
+#restart apache&disable SELinux
+/usr/sbin/setsebool httpd_can_network_connect 1
 systemctl restart httpd  
 
 #Firewall

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Upgrade section
-yum -y update
-yum -y upgrade
+#yum -y update
+#yum -y upgrade
 
 #install packages section
 
@@ -72,44 +72,17 @@ systemctl restart httpd
 
 #Firewall
 yum -y install iptables-services
-export IPT="iptables"
-export WAN=eth0
-#clear all previous rules
-$IPT -F
-$IPT -F -t nat
-$IPT -F -t mangle
-$IPT -X
-$IPT -t nat -X
-$IPT -t mangle -X
-#drop all unknown traffic
-$IPT -P INPUT DROP
-$IPT -P OUTPUT DROP
-$IPT -P FORWARD DROP
-$IPT -A INPUT -i lo -j ACCEPT
-#Accept all traffic from localhost
-$IPT -A INPUT -i lo -j ACCEPT
-$IPT -A OUTPUT -o lo -j ACCEPT
-#Enable WAN for output
-$IPT -A OUTPUT -o $WAN -j ACCEPT
-#Enable WAN for input
-$IPT -A INPUT -i $WAN -j ACCEPT
-#Accept all confirmed conection and subconnections
-$IPT -A INPUT -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPT -A OUTPUT -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
-$IPT -A FORWARD -p all -m state --state ESTABLISHED,RELATED -j ACCEPT
-#Disable all dangerous packets
-$IPT -A INPUT -m state --state INVALID -j DROP
-$IPT -A FORWARD -m state --state INVALID -j DROP
-$IPT -A INPUT -p tcp --tcp-flags ALL NONE -j DROP
-$IPT -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
-$IPT -A OUTPUT -p tcp ! --syn -m state --state NEW -j DROP
-#Enable ssh
-#$IPT -A INPUT -i $WAN -p tcp --dport 22 -j ACCEPT
 
-$IPT -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
-$IPT -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-#$IPT -A INPUT -p tcp -m tcp --dport 1:1024 -j DROP
+sh ./iptables.sh
+
 systemctl start iptables
 systemctl enable iptables
 
+#rerouting from http to https
+cat > /var/www/html/.htaccess <<- EOM
 
+RewriteEngine On 
+RewriteCond %{HTTPS} off 
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+EOM

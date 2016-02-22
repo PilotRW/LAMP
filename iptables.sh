@@ -25,15 +25,15 @@ $IPT -P FORWARD DROP
 
 # Разрешаем localhost и локалку
 $IPT -A INPUT -i lo -j ACCEPT
-#$IPT -A INPUT -i $LAN1 -j ACCEPT
+$IPT -A INPUT -i $LAN1 -j ACCEPT
 $IPT -A OUTPUT -o lo -j ACCEPT
 $IPT -A OUTPUT -o $LAN1 -j ACCEPT
 
 # Рзрешаем пинги
-$IPT -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
-$IPT -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
-$IPT -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
-$IPT -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+#$IPT -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
+#$IPT -A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+#$IPT -A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+#$IPT -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 
 # Разрешаем исходящие подключения сервера
 $IPT -A OUTPUT -o $WAN -j ACCEPT
@@ -59,9 +59,9 @@ $IPT -A OUTPUT -p tcp ! --syn -m state --state NEW -j DROP
 #$IPT -A INPUT -s 84.122.21.197 -j REJECT
 
 # Разрешаем доступ из локалки наружу
-$IPT -A FORWARD -i $LAN1 -o $WAN -j ACCEPT
+#$IPT -A FORWARD -i $LAN1 -o $WAN -j ACCEPT
 # Заурываем доступ снаружи в локалку
-$IPT -A FORWARD -i $WAN -o $LAN1 -j REJECT
+#$IPT -A FORWARD -i $WAN -o $LAN1 -j REJECT
 
 # Пробрасываем порт в локалку
 #$IPT -t nat -A PREROUTING -p tcp --dport 23543 -i ${WAN} -j DNAT --to 10.1.3.50:3389

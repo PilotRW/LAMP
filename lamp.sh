@@ -1,23 +1,19 @@
 #!/bin/bash
 
-#Upgrade section
-#yum -y update
-#yum -y upgrade
-
 #install packages section
 
 #install Apache
-yum -y install httpd
+sudo yum -y install httpd
 #Install mariadb
-yum -y install mariadb mariadb-server
+sudo yum -y install mariadb mariadb-server
 #Install php
-yum -y install php
+sudo yum -y install php
 #install  tomcat
-yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
+sudo yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
 #install SSL
-yum -y install mod_ssl openssl
+sudo yum -y install mod_ssl openssl
 #install wget
-yum -y install wget
+sudo yum -y install wget
 
 #make file phpinfo.php
 cat > /var/www/html/phpinfo.php <<- EOM
@@ -30,59 +26,61 @@ phpinfo();
 
 EOM
 
-#echo "<?php" > /var/www/html/phpinfo.php
-#echo "phpinfo();" >> /var/www/html/phpinfo.php
-#echo "?>" >> /var/www/html/phpinfo.php
+#copying apache config file
+sudo cp httpd.conf /etc/httpd/conf/
 
 #start apache&maria
-systemctl start httpd
-systemctl enable httpd
-systemctl start mariadb
-systemctl enable mariadb
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
 
 #configure&start tomcat
 
 #copying correct  tomcat config file 
-cp -f tomcat-users.xml /usr/share/tomcat/conf/
+sudo cp -f tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
-systemctl start tomcat
-systemctl enable tomcat
+sudo systemctl start tomcat
+sudo systemctl enable tomcat
 
 # Download Jenkins and put them into tomcat 
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
-cp jenkins.war /usr/share/tomcat/webapps/
+sudo cp jenkins.war /usr/share/tomcat/webapps/
 
 #reverse proxy /jenkins
-cp reverse-proxy.conf /etc/httpd/conf.d/
+sudo cp reverse-proxy.conf /etc/httpd/conf.d/
 
 #SSL
-openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr
-openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
-cp ca.crt /etc/pki/tls/certs
-cp ca.key /etc/pki/tls/private/
-cp ca.csr /etc/pki/tls/private/
-cp ssl.conf /etc/httpd/conf.d/
+sudo openssl genrsa -out ca.key 2048
+sudo openssl req -new -key ca.key -out ca.csr
+sudo openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+sudo cp ca.crt /etc/pki/tls/certs
+sudo cp ca.key /etc/pki/tls/private/
+sudo cp ca.csr /etc/pki/tls/private/
+sudo cp ssl.conf /etc/httpd/conf.d/
 
 #restart apache&disable SELinux
-/usr/sbin/setsebool httpd_can_network_connect 1
-systemctl restart httpd  
-
-#Firewall
-yum -y install iptables-services
-
-sh ./iptables.sh
-
-systemctl start iptables
-systemctl enable iptables
+#/usr/sbin/setsebool httpd_can_network_connect 1
+#systemctl restart httpd  
 
 #rerouting from http to https
-cat > /var/www/html/.htaccess <<- EOM
+sudo cat > /var/www/html/.htaccess <<- EOM
 
 RewriteEngine On 
 RewriteCond %{HTTPS} off 
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 EOM
+
+
+#Firewall
+sudo yum -y install iptables-services
+
+sudo cp iptables /etc/sysconfig/
+
+sudo systemctl start iptables
+sudo systemctl enable iptables
+
+

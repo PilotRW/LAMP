@@ -25,9 +25,9 @@ $IPT -P FORWARD DROP
 
 # Разрешаем localhost и локалку
 $IPT -A INPUT -i lo -j ACCEPT
-$IPT -A INPUT -i $LAN1 -j ACCEPT
+#$IPT -A INPUT -i $LAN1 -j ACCEPT
 $IPT -A OUTPUT -o lo -j ACCEPT
-$IPT -A OUTPUT -o $LAN1 -j ACCEPT
+#$IPT -A OUTPUT -o $LAN1 -j ACCEPT
 
 # Рзрешаем пинги
 #$IPT -A INPUT -p icmp --icmp-type echo-reply -j ACCEPT
@@ -60,7 +60,8 @@ $IPT -A OUTPUT -p tcp ! --syn -m state --state NEW -j DROP
 
 # Разрешаем доступ из локалки наружу
 #$IPT -A FORWARD -i $LAN1 -o $WAN -j ACCEPT
-# Заурываем доступ снаружи в локалку
+
+# Закрываем доступ снаружи в локалку
 #$IPT -A FORWARD -i $WAN -o $LAN1 -j REJECT
 
 # Пробрасываем порт в локалку

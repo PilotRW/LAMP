@@ -12,11 +12,11 @@ export WAN=eth0
 
 # Очищаем правила
 $IPT -F
-$IPT -F -t nat
-$IPT -F -t mangle
-$IPT -X
-$IPT -t nat -X
-$IPT -t mangle -X
+# $IPT -F -t nat
+# $IPT -F -t mangle
+# $IPT -X
+# $IPT -t nat -X
+# $IPT -t mangle -X
 
 # Запрещаем все, что не разрешено
 $IPT -P INPUT DROP
@@ -105,4 +105,4 @@ $IPT -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 #$IPT -A block_fw -j DROP
 
 # Сохраняем правила
-/sbin/iptables-save  > /etc/sysconfig/iptables
+# /sbin/iptables-save  > /etc/sysconfig/iptables

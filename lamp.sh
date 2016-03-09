@@ -74,6 +74,7 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 EOM
 
+systemctl restart httpd
 
 #Firewall
 yum -y install iptables-services

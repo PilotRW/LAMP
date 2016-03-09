@@ -78,10 +78,7 @@ EOM
 #Firewall
 yum -y install iptables-services
 
-#sudo cp iptables /etc/sysconfig/
-#run  iptables configuring script
-./iptables.sh
-
+cp iptables /etc/sysconfig/
 systemctl start iptables
 systemctl enable iptables
 

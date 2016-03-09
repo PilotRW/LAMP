@@ -16,7 +16,7 @@ sudo yum -y install mod_ssl openssl
 sudo yum -y install wget
 
 #make file phpinfo.php
-cat > /var/www/html/phpinfo.php <<- EOM
+sudo bash 'cat > /var/www/html/phpinfo.php <<- EOM
 
 <?php
 
@@ -24,7 +24,7 @@ phpinfo();
 
 ?>
 
-EOM
+EOM'
 
 #copying apache config file
 sudo cp httpd.conf /etc/httpd/conf/
@@ -66,19 +66,21 @@ sudo cp ssl.conf /etc/httpd/conf.d/
 #systemctl restart httpd  
 
 #rerouting from http to https
-sudo cat > /var/www/html/.htaccess <<- EOM
+sudo bash 'cat > /var/www/html/.htaccess <<- EOM
 
 RewriteEngine On 
 RewriteCond %{HTTPS} off 
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
-EOM
+EOM'
 
 
 #Firewall
 sudo yum -y install iptables-services
 
-sudo cp iptables /etc/sysconfig/
+#sudo cp iptables /etc/sysconfig/
+#run  iptables configuring script
+./iptables.sh
 
 sudo systemctl start iptables
 sudo systemctl enable iptables

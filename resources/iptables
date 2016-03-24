@@ -24,7 +24,7 @@ COMMIT
 -A INPUT -p tcp -m tcp -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
--A INPUT -p tcp -m tcp --dport 10000 -j ACCEPT
+# -A INPUT -p tcp -m tcp --dport 10000 -j ACCEPT
 -A INPUT -j DROP
 COMMIT
 # Completed on Wed Mar  9 17:40:33 2016

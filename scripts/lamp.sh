@@ -27,7 +27,7 @@ phpinfo();
 EOM
 
 #copying apache config file
-cp httpd.conf /etc/httpd/conf/
+cp /resources/httpd.conf /etc/httpd/conf/
 
 #start apache&maria
 systemctl start httpd
@@ -38,7 +38,7 @@ systemctl enable mariadb
 #configure&start tomcat
 
 #copying correct  tomcat config file 
-cp -f tomcat-users.xml /usr/share/tomcat/conf/
+cp -f /resources/tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
 systemctl start tomcat
@@ -47,10 +47,10 @@ systemctl enable tomcat
 # Download Jenkins and put them into tomcat 
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
-cp jenkins.war /usr/share/tomcat/webapps/
+cp /resources/jenkins.war /usr/share/tomcat/webapps/
 
 #reverse proxy /jenkins
-cp reverse-proxy.conf /etc/httpd/conf.d/
+cp /resources/reverse-proxy.conf /etc/httpd/conf.d/
 
 #SSL
 openssl genrsa -out ca.key 2048
@@ -79,7 +79,8 @@ systemctl restart httpd
 #Firewall
 yum -y install iptables-services
 
-cp iptables /etc/sysconfig/
+cp /resources/iptables /etc/sysconfig/
+
 systemctl start iptables
 systemctl enable iptables
 

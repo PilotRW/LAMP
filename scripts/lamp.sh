@@ -15,6 +15,33 @@ yum -y install mod_ssl openssl
 #install wget
 yum -y install wget
 
+#tomcat & jenkins
+
+#copying correct  tomcat config file 
+cp -f /resources/tomcat-users.xml /usr/share/tomcat/conf/
+
+#start tomcat
+systemctl start tomcat
+systemctl enable tomcat
+
+# Download Jenkins and put them into tomcat 
+wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
+# Copy .war to Jenkins
+cp /jenkins.war /usr/share/tomcat/webapps/
+
+
+#SSL
+openssl genrsa -out ca.key 2048
+openssl req -new -key ca.key -out ca.csr
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+cp ca.crt /etc/pki/tls/certs
+cp ca.key /etc/pki/tls/private/
+cp ca.csr /etc/pki/tls/private/
+cp ssl.conf /etc/httpd/conf.d/
+
+#reverse proxy /jenkins
+cp /resources/reverse-proxy.conf /etc/httpd/conf.d/
+
 #make file phpinfo.php
 cat > /var/www/html/phpinfo.php <<- EOM
 
@@ -29,42 +56,6 @@ EOM
 #copying apache config file
 cp /resources/httpd.conf /etc/httpd/conf/
 
-#start apache&maria
-systemctl start httpd
-systemctl enable httpd
-systemctl start mariadb
-systemctl enable mariadb
-
-#configure&start tomcat
-
-#copying correct  tomcat config file 
-cp -f /resources/tomcat-users.xml /usr/share/tomcat/conf/
-
-#start tomcat
-systemctl start tomcat
-systemctl enable tomcat
-
-# Download Jenkins and put them into tomcat 
-wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
-# Copy .war to Jenkins
-cp /resources/jenkins.war /usr/share/tomcat/webapps/
-
-#reverse proxy /jenkins
-cp /resources/reverse-proxy.conf /etc/httpd/conf.d/
-
-#SSL
-openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr
-openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
-cp ca.crt /etc/pki/tls/certs
-cp ca.key /etc/pki/tls/private/
-cp ca.csr /etc/pki/tls/private/
-cp ssl.conf /etc/httpd/conf.d/
-
-#restart apache&disable SELinux
-#/usr/sbin/setsebool httpd_can_network_connect 1
-#systemctl restart httpd  
-
 #rerouting from http to https
 cat > /var/www/html/.htaccess <<- EOM
 
@@ -74,7 +65,11 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 EOM
 
-systemctl restart httpd
+#start apache&maria
+systemctl start httpd
+systemctl enable httpd
+systemctl start mariadb
+systemctl enable mariadb
 
 #Firewall
 yum -y install iptables-services

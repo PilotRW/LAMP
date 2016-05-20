@@ -18,7 +18,7 @@ yum -y install wget
 #tomcat & jenkins
 
 #copying correct  tomcat config file 
-cp -f /resources/tomcat-users.xml /usr/share/tomcat/conf/
+cp -f home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
 systemctl start tomcat
@@ -27,7 +27,7 @@ systemctl enable tomcat
 # Download Jenkins and put them into tomcat 
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
-cp /jenkins.war /usr/share/tomcat/webapps/
+cp jenkins.war /usr/share/tomcat/webapps/
 
 
 #SSL
@@ -40,7 +40,7 @@ cp ca.csr /etc/pki/tls/private/
 cp ssl.conf /etc/httpd/conf.d/
 
 #reverse proxy /jenkins
-cp /resources/reverse-proxy.conf /etc/httpd/conf.d/
+cp /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/
 
 #make file phpinfo.php
 cat > /var/www/html/phpinfo.php <<- EOM
@@ -54,7 +54,7 @@ phpinfo();
 EOM
 
 #copying apache config file
-cp /resources/httpd.conf /etc/httpd/conf/
+cp /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
 
 #rerouting from http to https
 cat > /var/www/html/.htaccess <<- EOM
@@ -74,7 +74,7 @@ systemctl enable mariadb
 #Firewall
 yum -y install iptables-services
 
-cp /resources/iptables /etc/sysconfig/
+cp /home/administrator/LAMP/resources/iptables /etc/sysconfig/
 
 systemctl start iptables
 systemctl enable iptables

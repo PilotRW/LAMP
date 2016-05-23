@@ -2,19 +2,19 @@
 
 #install packages section
 
-yum -y update
+sudo yum -y update
 #install Apache
-yum -y install httpd
+sudo yum -y install httpd
 #Install mariadb
-yum -y install mariadb mariadb-server
+sudo yum -y install mariadb mariadb-server
 #Install php
-yum -y install php
+sudo yum -y install php
 #install  tomcat
-yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
+sudo yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
 #install SSL
-yum -y install mod_ssl openssl
+sudo yum -y install mod_ssl openssl
 #install wget
-yum -y install wget
+sudo yum -y install wget
 
 #tomcat & jenkins
 
@@ -22,8 +22,8 @@ yum -y install wget
 cp -f /home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
-systemctl start tomcat
-systemctl enable tomcat
+sudo systemctl start tomcat
+sudo systemctl enable tomcat
 
 # Download Jenkins and put them into tomcat 
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
@@ -32,9 +32,9 @@ cp jenkins.war /usr/share/tomcat/webapps/
 
 
 #SSL
-openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr -subj /C=UA/ST=Kyiv/L=Kuiv/O=TC/OU=DO/CN=LAMP/emailAddress=pilotrw@gmail.com
-openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+sudo openssl genrsa -out ca.key 2048
+sudo openssl req -new -key ca.key -out ca.csr -subj /C=UA/ST=Kyiv/L=Kuiv/O=TC/OU=DO/CN=LAMP/emailAddress=pilotrw@gmail.com
+sudo openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
 cp ca.crt /etc/pki/tls/certs
 cp ca.key /etc/pki/tls/private/
 cp ca.csr /etc/pki/tls/private/
@@ -67,17 +67,17 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 EOM
 
 #start apache&maria
-systemctl start httpd
-systemctl enable httpd
-systemctl start mariadb
-systemctl enable mariadb
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
 
 #Firewall
-yum -y install iptables-services
+sudo yum -y install iptables-services
 
 cp /home/administrator/LAMP/resources/iptables /etc/sysconfig/
 
-systemctl start iptables
-systemctl enable iptables
+sudo systemctl start iptables
+sudo systemctl enable iptables
 
 

@@ -2,6 +2,7 @@
 
 #install packages section
 
+yum -y update
 #install Apache
 yum -y install httpd
 #Install mariadb
@@ -18,7 +19,7 @@ yum -y install wget
 #tomcat & jenkins
 
 #copying correct  tomcat config file 
-cp -f home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
+cp -f /home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
 systemctl start tomcat
@@ -40,7 +41,7 @@ cp ca.csr /etc/pki/tls/private/
 cp /home/administrator/LAMP/resources/ssl.conf /etc/httpd/conf.d/
 
 #reverse proxy /jenkins
-cp /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/
+cp -f /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/
 
 #make file phpinfo.php
 cat > /var/www/html/phpinfo.php <<- EOM
@@ -54,7 +55,7 @@ phpinfo();
 EOM
 
 #copying apache config file
-cp /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
+cp -f /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
 
 #rerouting from http to https
 cat > /var/www/html/.htaccess <<- EOM

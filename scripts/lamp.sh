@@ -32,12 +32,12 @@ cp jenkins.war /usr/share/tomcat/webapps/
 
 #SSL
 openssl genrsa -out ca.key 2048
-openssl req -new -key ca.key -out ca.csr
+openssl req -new -key ca.key -out ca.csr -subj /C=UA/ST=Kyiv/L=Kuiv/O=TC/OU=DO/CN=LAMP/emailAddress=pilotrw@gmail.com
 openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
 cp ca.crt /etc/pki/tls/certs
 cp ca.key /etc/pki/tls/private/
 cp ca.csr /etc/pki/tls/private/
-cp ssl.conf /etc/httpd/conf.d/
+cp /home/administrator/LAMP/resources/ssl.conf /etc/httpd/conf.d/
 
 #reverse proxy /jenkins
 cp /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/

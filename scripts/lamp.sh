@@ -2,46 +2,46 @@
 
 #install packages section
 
-sudo yum -y update
+yum -y update
 #install Apache
-sudo yum -y install httpd
+yum -y install httpd
 #Install mariadb
-sudo yum -y install mariadb mariadb-server
+yum -y install mariadb mariadb-server
 #Install php
-sudo yum -y install php
+yum -y install php
 #install  tomcat
-sudo yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
+yum -y install tomcat tomcat-webapps tomcat-admin tomcat-admin-webapps
 #install SSL
-sudo yum -y install mod_ssl openssl
+yum -y install mod_ssl openssl
 #install wget
-sudo yum -y install wget
+yum -y install wget
 
 #tomcat & jenkins
 
 #copying correct  tomcat config file 
-sudo cp -f /home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
+cp -f /home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
 
 #start tomcat
-sudo systemctl start tomcat
-sudo systemctl enable tomcat
+systemctl start tomcat
+systemctl enable tomcat
 
 # Download Jenkins and put them into tomcat 
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
-sudo cp jenkins.war /usr/share/tomcat/webapps/
+cp jenkins.war /usr/share/tomcat/webapps/
 
 
 #SSL
-sudo openssl genrsa -out ca.key 2048
-sudo openssl req -new -key ca.key -out ca.csr -subj /C=UA/ST=Kyiv/L=Kuiv/O=TC/OU=DO/CN=LAMP/emailAddress=pilotrw@gmail.com
-sudo openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
-sudo cp ca.crt /etc/pki/tls/certs
-sudo cp ca.key /etc/pki/tls/private/
-sudo cp ca.csr /etc/pki/tls/private/
-sudo cp /home/administrator/LAMP/resources/ssl.conf /etc/httpd/conf.d/
+openssl genrsa -out ca.key 2048
+openssl req -new -key ca.key -out ca.csr -subj /C=UA/ST=Kyiv/L=Kuiv/O=TC/OU=DO/CN=LAMP/emailAddress=pilotrw@gmail.com
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+cp ca.crt /etc/pki/tls/certs
+cp ca.key /etc/pki/tls/private/
+cp ca.csr /etc/pki/tls/private/
+cp /home/administrator/LAMP/resources/ssl.conf /etc/httpd/conf.d/
 
 #reverse proxy /jenkins
-sudo cp -f /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/
+cp -f /home/administrator/LAMP/resources/reverse-proxy.conf /etc/httpd/conf.d/
 
 #make file phpinfo.php
 cat > /var/www/html/phpinfo.php <<- EOM
@@ -55,7 +55,7 @@ phpinfo();
 EOM
 
 #copying apache config file
-sudo cp -f /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
+cp -f /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
 
 #rerouting from http to https
 cat > /var/www/html/.htaccess <<- EOM
@@ -67,17 +67,17 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 EOM
 
 #start apache&maria
-sudo systemctl start httpd
-sudo systemctl enable httpd
-sudo systemctl start mariadb
-sudo systemctl enable mariadb
+systemctl start httpd
+systemctl enable httpd
+systemctl start mariadb
+systemctl enable mariadb
 
 #Firewall
-sudo yum -y install iptables-services
+yum -y install iptables-services
 
-sudo cp /home/administrator/LAMP/resources/iptables /etc/sysconfig/
+cp /home/administrator/LAMP/resources/iptables /etc/sysconfig/
 
-sudo systemctl start iptables
-sudo systemctl enable iptables
+systemctl start iptables
+systemctl enable iptables
 
 

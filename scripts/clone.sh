@@ -16,5 +16,5 @@ sleep 1m
 #fi
 vboxmanage guestcontrol "LAMP_1" run --username administrator --password 123456 -- /bin/bash -c "cd /home/administrator && git clone https://github.com/PilotRW/LAMP.git"
 vboxmanage guestcontrol "LAMP_1" run --username administrator --password 123456 -- /bin/bash -c "cd /home/administrator && chown -R -h administrator:administrator /home/administrator/LAMP/"
-vboxmanage guestcontrol "LAMP_1" run --username administrator --password 123456 -- /bin/bash -c "cd /home/administrator/LAMP/scripts && sudo ./scripts/lamp.sh"
+vboxmanage guestcontrol "LAMP_1" run --username administrator --password 123456 -- /bin/bash -c "cd /home/administrator/LAMP/scripts && sudo ./lamp.sh"
 

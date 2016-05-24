@@ -28,7 +28,7 @@ systemctl start tomcat
 systemctl enable tomcat
 
 # Download Jenkins and put them into tomcat 
-wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
+wget http://mirrors.jenkins-ci.org/war-stable/1.651.2/jenkins.war
 # Copy .war to Jenkins
 cp jenkins.war /usr/share/tomcat/webapps/
 chown tomcat:tomcat /usr/share/tomcat/webapps/jenkins.war

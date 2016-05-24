@@ -20,8 +20,8 @@ yum -y install wget
 
 #copying correct  tomcat config file 
 cp -f /home/administrator/LAMP/resources/tomcat-users.xml /usr/share/tomcat/conf/
-chown administrator:administrator /usr/share/tomcat/conf/tomcat-users.xml
-chmod 655 /usr/share/tomcat/conf/tomcat-users.xml
+chown tomcat:tomcat /usr/share/tomcat/conf/tomcat-users.xml
+chmod 665 /usr/share/tomcat/conf/tomcat-users.xml
 
 #start tomcat
 systemctl start tomcat
@@ -32,7 +32,7 @@ wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
 cp jenkins.war /usr/share/tomcat/webapps/
 chown administrator:administrator /usr/share/tomcat/webapps/jenkins.war
-chmod 655 /usr/share/tomcat/webapps/jenkins.war
+chmod 665 /usr/share/tomcat/webapps/jenkins.war
 
 #SSL
 openssl genrsa -out ca.key 2048
@@ -61,7 +61,7 @@ chmod 655 /var/www/html/phpinfo.php
 
 #copying apache config file
 cp -f /home/administrator/LAMP/resources/httpd.conf /etc/httpd/conf/
-chmod 655 /etc/httpd/conf/httpd.conf
+chmod 665 /etc/httpd/conf/httpd.conf
 
 #rerouting from http to https
 cat > /var/www/html/.htaccess <<- EOM
@@ -71,8 +71,7 @@ RewriteCond %{HTTPS} off
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 EOM
-chown administrator:administrator /etc/httpd/conf/httpd.conf
-chmod 755 /etc/httpd/conf/.htaccess
+chmod 665 /var/www/html/.htaccess
 
 #start apache&maria
 systemctl start httpd

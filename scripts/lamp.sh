@@ -31,7 +31,7 @@ systemctl enable tomcat
 wget http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 # Copy .war to Jenkins
 cp jenkins.war /usr/share/tomcat/webapps/
-chown administrator:administrator /usr/share/tomcat/webapps/jenkins.war
+chown tomcat:tomcat /usr/share/tomcat/webapps/jenkins.war
 chmod 665 /usr/share/tomcat/webapps/jenkins.war
 
 #SSL
